@@ -6,9 +6,10 @@ import Data.Text as Text hiding (unpack)
 import Data.Unjson
 
 data Example = Example
-   { exampleName     :: Text.Text,
-     exampleArray    :: [Int],
-     exampleOptional :: Maybe Bool }
+   { exampleName     :: Text.Text
+   , exampleArray    :: [Int]
+   , exampleOptional :: Maybe Bool
+   }
 
 unjsonExample :: UnjsonDef Example
 unjsonExample = objectOf $ pure Example
@@ -24,7 +25,11 @@ unjsonExample = objectOf $ pure Example
           "Optional boolean"
 
 prettyOptions :: Options
-prettyOptions =  Options { pretty = True, indent = 4, nulls = False}
+prettyOptions =  Options
+    { pretty = True
+    , indent = 4
+    , nulls  = False
+    }
 
 objectNoErrors :: Value
 objectNoErrors = object
