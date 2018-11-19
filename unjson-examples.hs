@@ -1,8 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 import Data.Aeson hiding (Options)
-import Data.ByteString.Lazy.Char8 (unpack)
-import Data.Text as Text hiding (unpack)
+import Data.ByteString.Lazy.Char8 as BS (putStrLn)
+import Data.Text as Text
 import Data.Unjson
 
 data Example = Example
@@ -59,8 +59,8 @@ main = do
     let Result val_e iss_e = doparse objectWithErrors
     print $ exampleArray val   -- This shows the parsed Aeson AST.
     print iss_e                -- This will print any parse errors that occurred if any.
-    putStrLn $ toBSunpack  val -- Turns an Aeson AST into a JSON string
-    putStrLn $ toBSunpack' val -- Turns an Aeson AST into a JSON string (with pretty print)
+    BS.putStrLn $ jsToByteString  val -- Turns an Aeson AST into a JSON string
+    BS.putStrLn $ jsToByteString' val -- Turns an Aeson AST into a JSON string (with pretty print)
         where
-            toBSunpack = unpack . unjsonToByteStringLazy unjsonExample
-            toBSunpack' = unpack . unjsonToByteStringLazy' prettyOptions unjsonExample
+            jsToByteString  = unjsonToByteStringLazy  unjsonExample
+            jsToByteString' = unjsonToByteStringLazy' prettyOptions unjsonExample
