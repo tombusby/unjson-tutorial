@@ -1,5 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
+import Data.Aeson
 import Data.Text as Text
 import Data.Unjson
 
@@ -21,5 +22,18 @@ unjsonExample = objectOf $ pure Example
           exampleOptional
           "Optional boolean"
 
+doparse :: Data.Unjson.Result Example
+doparse = parse unjsonExample $ object 
+    [ "name" .= ("test" :: Text.Text)
+    , "array_of_ints" .= 
+        [ toJSON (123 :: Int)
+        , toJSON (321 :: Int)
+        ]
+    , "optional_bool" .= True
+    ]
+
 main = do
-    putStrLn "hello"
+    let Result val iss = doparse
+    print $ exampleArray val  -- This shows the parsed Aeson AST.
+    print iss                 -- This will print any parse errors that occurred if any.
+    print $ unjsonToByteStringLazy unjsonExample val -- Turns an Aeson AST into a JSON string
